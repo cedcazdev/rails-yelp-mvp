@@ -1,18 +1,21 @@
 require 'faker'
 
-puts 'Delete all restaurants...'
+puts 'Cleaning database...'
 Restaurant.destroy_all
 
-puts 'Creating 10 fake restaurants...'
+puts "Creating 10 records..."
 
 10.times do
-  Restaurant.create!(
+  restaurant = Restaurant.create(
     name: Faker::Restaurant.name,
-    adress: Faker::Address.street_address,
-    phone_number: Faker::PhoneNumber.cell_phone_in_e164,
-    category: Faker::Restaurant.type
-  )
+    address: Faker::Address.street_address,
+    phone_number: Faker::PhoneNumber.phone_number,
+    category: %w(chinese italian japanese french belgian).sample,
+    )
+  3.times do
+    restaurant.reviews.create(
+      content: Faker::Restaurant.review,
+      rating: (0..5).to_a.sample
+      )
+  end
 end
-
-puts 'Finished!'
-# Faker::Restaurant.review
